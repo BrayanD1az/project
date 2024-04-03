@@ -1,11 +1,11 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from scalation import EscaladorFigura3D
+from scalation import Scaler
 
 class Main:
     def __init__(self):
         self.fig, self.ax = self._create_figure()
-        self.escalador = EscaladorFigura3D(self.ax)
+        self.Scaler = Scaler(self.ax)
 
     def _create_figure(self):
         fig = plt.figure()
