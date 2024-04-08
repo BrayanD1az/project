@@ -1,20 +1,53 @@
-from numpy import dot, diag
 from matplotlib.pyplot import axes, draw
-from mpl_toolkits.mplot3d import Axes3D
-from matplotlib.widgets import Slider
+from matplotlib.widgets import Button
 
-class Scaler:
-    def __init__(self, ax):
+class ScaleDownButton:
+    def __init__(self, ax, scale_factor=1.1):
         self.ax = ax
-        self.slider = self._create_scale_slider()
+        self.scale_factor = scale_factor
+        self.button = self._create_button('Reducir escala', self._scale_down)
 
-    def _create_scale_slider(self):
-        ax_slider = axes([0.1, 0.01, 0.8, 0.03])
-        slider = Slider(ax_slider, 'Escala', 0.1, 2.0, valinit=1.0)
-        slider.on_changed(lambda val: self._on_slider_change(val))
-        return slider
+    def _create_button(self, label, callback):
+        ax_button = axes([0.1, 0.1, 0.1, 0.05])
+        button = Button(ax_button, label)
+        button.on_clicked(callback)
+        return button
 
-    def _on_slider_change(self, val):
-        escala = self.slider.val
-        self.ax.get_proj = lambda: dot(Axes3D.get_proj(self.ax), diag([escala, escala, escala, 1]))
+    def _scale_down(self, event):
+        print("Reduciendo escala")
+        self._scale_figure(self.scale_factor)
+
+    def _scale_figure(self, factor):
+        xlim = self.ax.get_xlim()
+        ylim = self.ax.get_ylim()
+        new_xlim = (xlim[0] - (factor - 1) * (xlim[1] - xlim[0]) / 2, xlim[1] + (factor - 1) * (xlim[1] - xlim[0]) / 2)
+        new_ylim = (ylim[0] - (factor - 1) * (ylim[1] - ylim[0]) / 2, ylim[1] + (factor - 1) * (ylim[1] - ylim[0]) / 2)
+        self.ax.set_xlim(new_xlim)
+        self.ax.set_ylim(new_ylim)
+        draw()
+
+
+class ScaleUpButton:
+    def __init__(self, ax, scale_factor=1.1):
+        self.ax = ax
+        self.scale_factor = scale_factor
+        self.button = self._create_button('Aumentar escala', self._scale_up)
+
+    def _create_button(self, label, callback):
+        ax_button = axes([0.1, 0.2, 0.1, 0.05])  # Cambiar la posición en y para separar los botones
+        button = Button(ax_button, label)
+        button.on_clicked(callback)
+        return button
+
+    def _scale_up(self, event):
+        print("Aumentando escala")
+        self._scale_figure(1 / self.scale_factor)
+
+    def _scale_figure(self, factor):
+        xlim = self.ax.get_xlim()
+        ylim = self.ax.get_ylim()
+        new_xlim = (xlim[0] - (factor - 1) * (xlim[1] - xlim[0]) / 2, xlim[1] + (factor - 1) * (xlim[1] - xlim[0]) / 2)
+        new_ylim = (ylim[0] - (factor - 1) * (ylim[1] - ylim[0]) / 2, ylim[1] + (factor - 1) * (ylim[1] - ylim[0]) / 2)
+        self.ax.set_xlim(new_xlim)
+        self.ax.set_ylim(new_ylim)
         draw()

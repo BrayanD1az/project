@@ -1,10 +1,18 @@
 import numpy as np
 from matplotlib.pyplot import figure, show
 from mpl_toolkits.mplot3d.art3d import Poly3DCollection
+from scalation import ScaleUpButton, ScaleDownButton
+from rotation import Rotator
+from translation import Translator
 
 class Main:
     def __init__(self):
         self.fig, self.ax = self.create_figure()
+        self.ax.axis('off')
+        self.scale_up_button = ScaleUpButton(self.ax)
+        self.scale_down_button = ScaleDownButton(self.ax)
+        self.rotator = Rotator(self.ax)
+        self.translator = Translator(self.ax)
 
     def create_figure(self):
         fig = figure()
@@ -195,15 +203,13 @@ class Main:
         z2 = np.array([-1, 1])
 
         # Dibujar las líneas para formar la 'X' con líneas más gruesas
-        self.ax.plot(x1, y1, z1, color='gray', linewidth=18)
-        self.ax.plot(x2, y2, z2, color='gray', linewidth=18)
+        self.ax.plot(x1, y1, z1, color='gray', linewidth=20)
+        self.ax.plot(x2, y2, z2, color='gray', linewidth=20)
 
         # Agregar esferas en cada punto de la primera línea de la 'X'
         self.ax.scatter(x1 - 0.1, y1, z1, color='grey', s=1600)
-        self.ax.scatter(x1 + 0.1, y1, z1, color='grey', s=1600)
         # Agregar esferas en cada punto de la segunda línea de la 'X'
         self.ax.scatter(x2 - 0.1, y2, z2, color='grey', s=1600)
-        self.ax.scatter(x2 + 0.1, y2, z2, color='grey', s=1600)
         
         self.ax.set_aspect('equal')
         self.ax.set_box_aspect([1, 1, 1])  # Igualar las proporciones de los ejes
