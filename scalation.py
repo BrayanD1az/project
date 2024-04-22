@@ -5,7 +5,7 @@ class ScaleDownButton:
     def __init__(self, ax, scale_factor=1.1):
         self.ax = ax
         self.scale_factor = scale_factor
-        self.button = self._create_button('Reducir escala', self._scale_down)
+        self.button = self._create_button('Escalar -', self._scale_down)
 
     def _create_button(self, label, callback):
         ax_button = axes([0.1, 0.1, 0.1, 0.05])
@@ -31,7 +31,7 @@ class ScaleUpButton:
     def __init__(self, ax, scale_factor=1.1):
         self.ax = ax
         self.scale_factor = scale_factor
-        self.button = self._create_button('Aumentar escala', self._scale_up)
+        self.button = self._create_button('Escalar +', self._scale_up)
 
     def _create_button(self, label, callback):
         ax_button = axes([0.1, 0.2, 0.1, 0.05])  # Cambiar la posición en y para separar los botones
